@@ -3,9 +3,11 @@ const moment = require('moment');
 const RunningShift = require('../models/RunningShift.model');
 const Shift = require('../models/Shift.model');
 const Employee = require('../models/Employee.model');
-const e = require('cors');
+
+const { isShiftValid, findShift } = require('./shift.util');
 
 
+// returns -> running shift employees object
 const reportLiveStatus = async (data) => {
     console.log(data);
     const {
@@ -82,28 +84,12 @@ const reportLiveStatus = async (data) => {
         const newRunningShift = await RunningShift.findById(runningShiftObj.id);
         newRunningShift['employees'] = employeesObj;
         await newRunningShift.save();
+        
+        return employee;
     }
 }
 
 
-const isShiftValid = async(startTime, endTime, time) => {
-    var start = moment('HH:mm', startTime);
-    var end = moment('HH:mm', endTime);
-    var time = moment('HH:mm', time);
 
-    if(time.diff(start) > 0 && time.diff(end) < 0) {
-        return true
-    }
-    else return false;
-}
-
-const findShift = async (time) => {
-    const shifts = await Shift.find();
-    const foundShift = shifts.map(shift => {
-        if(time.diff(shift.startTime) > 0 && time.diff(shift.endTime) < 0) 
-            return shift
-    })
-    return foundShift[0];
-}
 
 module.exports = { reportLiveStatus };

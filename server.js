@@ -12,6 +12,8 @@ const Employee = require('./models/Employee.model');
 const e = require('cors');
 
 const { reportLiveStatus } = require('./utils/esp32.util');
+const { initialConnection, updateDashboard } = require('./utils/dashboard.util');
+const { init, update } = require('./models/RunningShift.model');
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
@@ -21,21 +23,34 @@ app.get('/', (req, res) => {
 io.on('connection', async (socket) => {
     console.log('A station connected');
 
-    // event name - report-live-status
+    // event name -> report-live-status
     // data = {
     //     stationId: 'S1',
     //     tagId: 'nfklvks72y394inl',
     //     dateTime: '12-09-21 21:45',
     //     detected: true
     // }
-
     socket.on('report-live-status', (data) => {
         console.log(data);
-        reportLiveStatus(data);
+        const empData = reportLiveStatus(data);
+
+        updateDash(empData);
     });
+
+    // event name -> initial-connection-dashboard
+    // data = {
+    //     clientId: 'KJVKLBLSK89'
+    // }
+    socket.on('initial-connection-dashboard', (data) => {
+        console.log(data);
+        initialConnection(data);
+    })
 });
 
-
+// UPDATES DASH WITH EMPLOYEE DATA INCOMING FROM ESP32
+const updateDash = (data) => {
+    io.emit('dashboard-update', data);
+}
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
