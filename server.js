@@ -1,9 +1,11 @@
 const express = require('express');
+const http = require('http');
+const app = express();
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const moment = require('moment');
-const http = require('http');
+
 
 const RunningShift = require('./models/RunningShift.model');
 const Shift = require('./models/Shift.model');
@@ -13,8 +15,8 @@ const { reportLiveStatus } = require('./utils/esp32.util');
 const { initialConnection, updateDashboard } = require('./utils/dashboard.util');
 const { init, update } = require('./models/RunningShift.model');
 
-const app = express();
-const connectDB = require('./util/db');
+
+const connectDB = require('./utils/db');
 connectDB();
 
 app.get('/', (req, res) => {
