@@ -1,7 +1,4 @@
 const express = require('express');
-const app = express();
-const moment = require('moment');
-const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -9,7 +6,6 @@ const io = new Server(server);
 const RunningShift = require('./models/RunningShift.model');
 const Shift = require('./models/Shift.model');
 const Employee = require('./models/Employee.model');
-const e = require('cors');
 
 const { reportLiveStatus } = require('./utils/esp32.util');
 const { initialConnection, updateDashboard } = require('./utils/dashboard.util');
@@ -18,6 +14,9 @@ const { init, update } = require('./models/RunningShift.model');
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
+const app = express();
+const moment = require('moment');
+const http = require('http');
 
 
 io.on('connection', async (socket) => {

@@ -4,6 +4,7 @@ const RunningShift = require('../models/RunningShift.model');
 const Shift = require('../models/Shift.model');
 const Employee = require('../models/Employee.model');
 
+// time -> HH:mm  startTime -> HH:mm endTime -> HH:mm
 const isShiftValid = async (startTime, endTime, time) => {
     var start = moment('HH:mm', startTime);
     var end = moment('HH:mm', endTime);
