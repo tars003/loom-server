@@ -7,7 +7,7 @@ const dbUrl = process.env.ENVIRONMENT == 'DEV' ? process.env.MONGO_URI : url;
 const connectDB = () => {
     console.log(dbUrl);
     mongoose
-        .connect('mongodb+srv://ajay123:ajay123@transactions-puvlf.mongodb.net/backend?retryWrites=true&w=majority', {
+        .connect('mongodb+srv://ajay123:ajay123@transactions-puvlf.mongodb.net/loom?retryWrites=true&w=majority', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })

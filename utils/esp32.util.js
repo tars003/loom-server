@@ -17,36 +17,37 @@ const reportLiveStatus = async (data) => {
         detected
     } = data;
     const dateTime = moment('DD-MM-YY HH:mm', dateTimeString);
-    const date = dateTime.split(' ')[0];
-    const time = dateTime.split(' ')[1];
-    const Emp = await Employee.find({ tagId: tagId });
+    const date = dateTimeString.split(' ')[0];
+    const time = dateTimeString.split(' ')[1];
+    let Emp = await Employee.find({ tagId: tagId });
+    Emp = Emp[0];
+    // console.log('Emp', Emp);
     let employeesObj = [];
     let employees = [];
     let employee = {};
     let empIndex = -1;
     let runningShiftObj = {};
     let shiftObj = {};
-
-    const runningShifts = await RunningShift.find({ date: date });
-    const foundShifts = runningShifts.map(async (rs) => {
-        const shift = await Shift.findById(rs.shiftId);
-        if (isShiftValid(shift.startTime, shiftendTime, time)) {
-            shiftObj = shift;
-            return rs;
-        }
-    });
+    
+    const foundShift = await findShift(time);
+    console.log('found shift', foundShift);
+    const runningShift = await RunningShift.find({ date: date, shiftId: foundShift.id });
+    console.log('running shift', runningShift);
     // RUNNING SHIFT FOUND
-    if (foundShifts.length > 0) {
-        runningShiftObj = foundShifts[0];
+    if (runningShift.length > 0) {
+        runningShiftObj = runningShift[0];
         employeesObj = runningShiftObj.employees;
+        // console.log('runningshiftobj', runningShiftObj);
+        // console.log('employees', employeesObj);
         employees = employeesObj.map(emp => {
             return emp.id;
         });
     }
     // RUNNING SHIFT NOT FOUND
     else {
-        const empList = shiftObj.employees.map(empId => {
+        const empList = foundShift.employees.map(empId => {
             const empData = {
+                _id: empId,
                 activeTime: 0,
                 awayTime: 0,
                 idealTime: 0,
@@ -57,22 +58,20 @@ const reportLiveStatus = async (data) => {
         })
         runningShiftObj = await RunningShift.create({
             date: date,
-            shiftId: findShift(time),
+            shiftId: foundShift.id,
             employees: empList
         });
         employees = shiftObj.employees;
         employeesObj = empList;
     }
 
-    // employee = employeesObj.filter(emp => emp.id == Emp.id);
-    employee = employeesObj.map((emp, index) => {
-        if (emp.id == Emp.id) {
-            empIndex = index;
-            return emp;
-        }
-    });
+    // Filtering out employee object from shift list
+    employee = employeesObj.filter(emp => emp.id == Emp.id);
     employee = employee[0];
-    if (employee.length > 0) {
+    console.log('employeeObj', employeesObj);
+    console.log('employee', employee);
+    // IF FOUND UPDATING THE VALUES
+    if (employee) {
         if (detected) {
             employee['activeTime'] += 10;
             employee['status'] = true;
@@ -80,16 +79,20 @@ const reportLiveStatus = async (data) => {
             employee['awayTime'] += 10;
             employee['status'] = false;
         }
-        employeesObj[empIndex] = employee;
+        const newList =  employeesObj.map(emp => {
+            console.log('emp.id', emp.id);
+            console.log('employee.id', employee.id);
+            if(emp.id == employee.id) return employee;
+            else return emp;
+        });
+        console.log('empObject', employeesObj);
+        console.log('newList', newList);
         const newRunningShift = await RunningShift.findById(runningShiftObj.id);
-        newRunningShift['employees'] = employeesObj;
+        newRunningShift['employees'] = newList;
         await newRunningShift.save();
-        
+
         return employee;
     }
 }
-
-
-
 
 module.exports = { reportLiveStatus };

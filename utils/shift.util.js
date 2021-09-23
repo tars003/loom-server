@@ -6,9 +6,9 @@ const Employee = require('../models/Employee.model');
 
 // time -> HH:mm  startTime -> HH:mm endTime -> HH:mm
 const isShiftValid = async (startTime, endTime, time) => {
-    var start = moment('HH:mm', startTime);
-    var end = moment('HH:mm', endTime);
-    var time = moment('HH:mm', time);
+    var start = moment(startTime, 'H:mm');
+    var end = moment(endTime, 'H:mm');
+    var time = moment(time, 'H:mm');
 
     if (time.diff(start) > 0 && time.diff(end) < 0) {
         return true
@@ -17,12 +17,15 @@ const isShiftValid = async (startTime, endTime, time) => {
 }
 
 // time -> HH:mm
-const findShift = async (time) => {
+const findShift = async (timeString) => {
+    let time  = moment(timeString, 'H:mm');
     const shifts = await Shift.find();
     const foundShift = shifts.map(shift => {
-        if (time.diff(shift.startTime) > 0 && time.diff(shift.endTime) < 0)
+        let st = moment(shift.startTime, 'H:mm');
+        let et = moment(shift.endTime, 'H:mm');
+        if (time.diff(st) > 0 && time.diff(et) < 0)
             return shift
-    })
+    });
     return foundShift[0];
 }
 

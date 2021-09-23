@@ -1,11 +1,13 @@
 const express = require('express');
 const http = require('http');
+const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server, { cors: { origin: '*' } });
 const moment = require('moment');
 
+app.use(cors());
 
 const RunningShift = require('./models/RunningShift.model');
 const Shift = require('./models/Shift.model');
@@ -36,10 +38,11 @@ io.on('connection', async (socket) => {
     //     detected: true
     // }
     socket.on('report-live-status', (data) => {
+        console.log('Hello');
         console.log(data);
         const empData = reportLiveStatus(data);
 
-        updateDash(empData);
+        // updateDash(empData);
     });
 
     // event name -> initial-connection-dashboard
@@ -49,6 +52,14 @@ io.on('connection', async (socket) => {
     socket.on('initial-connection-dashboard', (data) => {
         console.log(data);
         initialConnection(data);
+    });
+
+    // event name -> initial-connection-dashboard
+    // data = {
+    //     clientId: 'KJVKLBLSK89'
+    // }
+    socket.on('test-conn', (data) => {
+        console.log(data);
     })
 });
 
