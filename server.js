@@ -57,6 +57,6 @@ const updateDash = (data) => {
     io.emit('dashboard-update', data);
 }
 
-server.listen(3000, () => {
+server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
 });
