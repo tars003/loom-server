@@ -16,7 +16,7 @@ const initialConnection = async (data) => {
 
 
 const getDateTime = () => {
-    return moment().format('DD-MM-YY HH:mm');
+    return moment().format('DD-MM-YY HH:mm:ss');
 }
 
 

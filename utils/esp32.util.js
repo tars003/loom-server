@@ -16,7 +16,7 @@ const reportLiveStatus = async (data) => {
         tagId,
         detected
     } = data;
-    const dateTime = moment('DD-MM-YY HH:mm', dateTimeString);
+    const dateTime = moment('DD-MM-YY HH:mm:ss', dateTimeString);
     const date = dateTimeString.split(' ')[0];
     const time = dateTimeString.split(' ')[1];
     let Emp = await Employee.find({ tagId: tagId });

@@ -40,6 +40,9 @@ io.on('connection', async (socket) => {
     socket.on('report-live-status', (data) => {
         console.log('Hello');
         console.log(data);
+
+        updateDash(data);
+
         const empData = reportLiveStatus(data);
 
         // updateDash(empData);
