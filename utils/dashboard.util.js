@@ -6,20 +6,20 @@ const Employee = require('../models/Employee.model');
 
 const {findRunningShift} = require('./shift.util');
 
-const initalConnection = async (data) => {
+const initialConnection = async (data) => {
 
-    const runningShift = findRunningShift(getDateTime);
-
+    const runningShift = await findRunningShift(getDateTime());
+    console.log('inside dashboard', runningShift);
     return runningShift;
 
 }
 
 
 const getDateTime = () => {
-    return moment();
+    return moment().format('DD-MM-YY HH:mm');
 }
 
 
 
 
-module.exports = { initalConnection };
+module.exports = { initialConnection };

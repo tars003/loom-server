@@ -32,14 +32,16 @@ const findShift = async (timeString) => {
 // time -> moment()
 const findRunningShift = async (time) => {
     var dateTime = moment('DD-MM-YY HH:mm', time);
-    var date = dateTime.split(' ')[0];
-    var time = dateTime.split(' ')[1];
+    var date = time.split(' ')[0];
+    var time = time.split(' ')[1];
 
     const shift = findShift(time);
-    const runningShift = await RunningShift.find({ date: date, shiftId: shift.id });
-
+    // const runningShift = await RunningShift.find({ date: date, shiftId: shift.id });
+    let runningShift = await RunningShift.find();
+    runningShift = runningShift[0];
+    console.log('found running shift', runningShift);
     return runningShift;
 
 } 
 
-module.exports = { isShiftValid, findShift }
+module.exports = { isShiftValid, findShift, findRunningShift }

@@ -49,9 +49,14 @@ io.on('connection', async (socket) => {
     // data = {
     //     clientId: 'KJVKLBLSK89'
     // }
-    socket.on('initial-connection-dashboard', (data) => {
+    socket.on('initial-connection-dashboard', async (data) => {
         console.log(data);
-        initialConnection(data);
+
+        socket.join(data.clientId);
+
+        const runningShift = await initialConnection(data);
+
+        io.to(data.clientId).emit('running-shift-data', {'runningShift' : runningShift});
     });
 
     // event name -> initial-connection-dashboard
