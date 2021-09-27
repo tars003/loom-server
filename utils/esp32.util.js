@@ -45,9 +45,11 @@ const reportLiveStatus = async (data) => {
     }
     // RUNNING SHIFT NOT FOUND
     else {
-        const empList = foundShift.employees.map(empId => {
+        const empList = foundShift.employees.map(emp => {
             const empData = {
-                _id: empId,
+                _id: emp.id,
+                name: emp.name,
+                stationId : emp.stationId,
                 activeTime: 0,
                 awayTime: 0,
                 idealTime: 0,

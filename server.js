@@ -34,7 +34,7 @@ io.on('connection', async (socket) => {
     // data = {
     //     stationId: 'S1',
     //     tagId: 'nfklvks72y394inl',
-    //     dateTime: '12-09-21 21:45',
+    //     dateTime: '12-09-21 21:45:10',
     //     detected: true
     // }
     socket.on('report-live-status', (data) => {

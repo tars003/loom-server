@@ -4,7 +4,11 @@ const ShiftSchema = mongoose.Schema({
     name: String,
     startTime: String,
     endTime: String,
-    employees: [String,]
+    employees: [{
+      _id : String,
+      name: String,
+      stationId: String,
+    },]
 });
 
 module.exports = mongoose.model("shift", ShiftSchema);

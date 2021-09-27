@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+      <html lang="en">
+      <head>
+      <meta charset="UTF-8">
+      <title>Title</title>
+<!--  <script src="./app.js"></script>-->
+  <script src="./socket.io.js"></script>
+  <!--    <script src="https://cdn.socket.io/4.1.2/socket.io.min.js" integrity="sha384-toS6mmwu70G0fw54EGlWWeA4z3dyJ+dlXBtSURSKN4vyRFOcxd3Bzjj/AoOwY+Rg" crossorigin="anonymous"></script>-->
+</head>
+<body>
+<h1>ESP32</h1>
+<script>
+  // const socket = io("https://loom-server.herokuapp.com/");
+  const socket = io("http://localhost:3000");
+  const data = {
+      stationId: "S1",
+      tagId: "099",
+      employeeId: "614c314dbca9f29e568196c6",
+      dateTimeString: "13-09-21 12:00:00",
+      detected: true
+  }
+  // socket.emit('test-conn', "hello");
+  socket.emit('report-live-status', data);
+  console.log('Emmission successful')
+</script>
+</body>
+</html></title>
+</head>
+<body>
+
+</body>
+</html>

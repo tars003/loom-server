@@ -6,6 +6,8 @@ const Runningshift = mongoose.Schema({
     employees: [
         {
             _id: String,
+            name: String,
+            stationId: String,
             activeTime: Number,
             awayTime: Number,
             idealTime: Number,
