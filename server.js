@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server, { cors: { origin: '*' } });
+const io = new Server(server, { cors: { origin: '*' }, allowEIO3: true });
 const moment = require('moment');
 
 app.use(cors());
@@ -26,9 +26,10 @@ app.get('/', (req, res) => {
 });
 
 
-
 io.on('connection', async (socket) => {
     console.log('A station connected');
+
+    socket.on('error', console.error);
 
     // event name -> report-live-status
     // data = {
@@ -68,7 +69,9 @@ io.on('connection', async (socket) => {
     // }
     socket.on('test-conn', (data) => {
         console.log(data);
-    })
+    });
+
+
 });
 
 // UPDATES DASH WITH EMPLOYEE DATA INCOMING FROM ESP32
