@@ -29,6 +29,8 @@ app.get('/', (req, res) => {
 io.on('connection', async (socket) => {
     console.log('A station connected');
 
+    io.emit('initial-message', "Connected !");
+
     socket.on('error', console.error);
 
     // event name -> report-live-status
@@ -38,6 +40,9 @@ io.on('connection', async (socket) => {
     //     dateTime: '12-09-21 21:45:10',
     //     detected: true
     // }
+
+    socket.on('message', data => console.log(data))
+
     socket.on('report-live-status', (data) => {
         console.log('Hello');
         console.log(data);
