@@ -1,0 +1,1 @@
+"42[\"report-live-status\",{\"stationId\":\"S1\",\"tagId\":\"099\",\"employeeId\":\"614c314dbca9f29e568196c6\",\"dateTimeString\":\"13-09-21 12:00:00\",\"detected\":true}]"

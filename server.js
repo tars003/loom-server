@@ -76,6 +76,10 @@ io.on('connection', async (socket) => {
         console.log(data);
     });
 
+    socket.on('disconnect', () => {
+        console.log('station disconnected');
+    })
+
 
 });
 
@@ -87,3 +91,5 @@ const updateDash = (data) => {
 server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
 });
+
+
