@@ -6,6 +6,9 @@ const Employee = require('../models/Employee.model');
 
 const { isShiftValid, findShift } = require('./shift.util');
 
+const getTime = () => {
+    return moment().format('HH:mm:ss');
+}
 
 // returns -> running shift employees object
 const reportLiveStatus = async (data) => {
@@ -81,11 +84,16 @@ const reportLiveStatus = async (data) => {
     console.log('employee', employee);
     // IF FOUND UPDATING THE VALUES
     if (employee) {
+        const currTime = moment(getTime(), 'HH:mm:ss');
+        const lastReportedTime = moment(employee['reportedTime'], 'HH:mm:ss');
+        const diff = currTime.diff(lastReportedTime, 'seconds');
         if (detected) {
-            employee['activeTime'] += 10;
+            // employee['activeTime'] += 10;
+            employee['activeTime'] += diff;
             employee['status'] = true;
         } else {
-            employee['awayTime'] += 10;
+            // employee['awayTime'] += 10;
+            employee['awayTime'] += diff;
             employee['status'] = false;
         }
         employee['reportedTime'] = dateTime;
