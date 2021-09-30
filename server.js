@@ -8,6 +8,7 @@ const io = new Server(server, { cors: { origin: '*' }, allowEIO3: true });
 const moment = require('moment');
 
 app.use(cors());
+app.use(express.json());
 
 const RunningShift = require('./models/RunningShift.model');
 const Shift = require('./models/Shift.model');
@@ -25,33 +26,40 @@ app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
 
+app.post('/report-live-status', (req, res) => {
+    try {
+        const data  = req.body;
+        console.log(data);
+        updateDash(data);
+        const empData = reportLiveStatus(data);
+
+        return res.status(200).json({
+            success: true
+        });
+    } catch(err) {
+        console.log(err);
+        return res.status(503).json({
+            success: false
+        });
+    }
+});
+
 
 io.on('connection', async (socket) => {
     console.log('A station connected');
-
-    io.emit('initial-message', "Connected !");
 
     socket.on('error', console.error);
 
     // event name -> report-live-status
     // data = {
-    //     stationId: 'S1',
+    //     stationId: 'STATION1',
     //     tagId: 'nfklvks72y394inl',
     //     dateTime: '12-09-21 21:45:10',
     //     detected: true
     // }
-
-    socket.on('message', data => console.log(data))
-
     socket.on('report-live-status', (data) => {
-        console.log('Hello');
-        console.log(data);
-
         updateDash(data);
-
         const empData = reportLiveStatus(data);
-
-        // updateDash(empData);
     });
 
     // event name -> initial-connection-dashboard
@@ -68,10 +76,7 @@ io.on('connection', async (socket) => {
         io.to(data.clientId).emit('running-shift-data', {'runningShift' : runningShift});
     });
 
-    // event name -> initial-connection-dashboard
-    // data = {
-    //     clientId: 'KJVKLBLSK89'
-    // }
+
     socket.on('test-conn', (data) => {
         console.log(data);
     });

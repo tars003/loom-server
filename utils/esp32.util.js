@@ -16,6 +16,12 @@ const reportLiveStatus = async (data) => {
         tagId,
         detected
     } = data;
+    console.log(
+        dateTimeString,
+        stationId,
+        tagId,
+        detected
+    );
     const dateTime = moment('DD-MM-YY HH:mm:ss', dateTimeString);
     const date = dateTimeString.split(' ')[0];
     const time = dateTimeString.split(' ')[1];
@@ -28,7 +34,8 @@ const reportLiveStatus = async (data) => {
     let empIndex = -1;
     let runningShiftObj = {};
     let shiftObj = {};
-    
+
+    console.log(time);
     const foundShift = await findShift(time);
     console.log('found shift', foundShift);
     const runningShift = await RunningShift.find({ date: date, shiftId: foundShift.id });
