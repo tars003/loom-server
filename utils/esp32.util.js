@@ -96,7 +96,7 @@ const reportLiveStatus = async (data) => {
             employee['awayTime'] += diff;
             employee['status'] = false;
         }
-        employee['reportedTime'] = dateTime;
+        employee['reportedTime'] = dateTimeString;
         const newList =  employeesObj.map(emp => {
             console.log('emp.id', emp.id);
             console.log('employee.id', employee.id);
