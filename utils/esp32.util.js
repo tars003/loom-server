@@ -89,12 +89,12 @@ const reportLiveStatus = async (data) => {
         const lastReportedTime = moment(employee['reportedTime'], 'HH:mm:ss');
         const diff = currTime.diff(lastReportedTime, 'seconds');
         if (detected == 'true') {
-            employee['activeTime'] += 10;
-            // employee['activeTime'] += diff;
+            // employee['activeTime'] += 10;
+            employee['activeTime'] += diff;
             employee['status'] = true;
         } else {
-            employee['awayTime'] += 10;
-            // employee['awayTime'] += diff;
+            // employee['awayTime'] += 10;
+            employee['awayTime'] += diff;
             employee['status'] = false;
         }
         employee['reportedTime'] = dateTimeString;
