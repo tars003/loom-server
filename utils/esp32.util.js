@@ -13,7 +13,7 @@ const getTime = () => {
 // returns -> running shift employees object
 const reportLiveStatus = async (data) => {
     console.log(data);
-    const {
+    let {
         dateTimeString,
         stationId,
         tagId,
@@ -25,13 +25,13 @@ const reportLiveStatus = async (data) => {
         tagId,
         detected
     );
-    // const dateTime = moment('DD-MM-YY HH:mm:ss', dateTimeString);
-    const dateTime = moment(dateTimeString).utc().format('DD-MM-YY HH:mm:ss');
+    dateTimeString = moment(dateTimeString).utc().format('DD-MM-YY HH:mm:ss');
+    const dateTime = moment('DD-MM-YY HH:mm:ss', dateTimeString);
     const date = dateTimeString.split(' ')[0];
     const time = dateTimeString.split(' ')[1];
     let Emp = await Employee.find({ tagId: tagId });
     Emp = Emp[0];
-    // console.log('Emp', Emp);
+    console.log('Emp', Emp);
     let employeesObj = [];
     let employees = [];
     let employee = {};
@@ -88,7 +88,7 @@ const reportLiveStatus = async (data) => {
         const currTime = moment(getTime(), 'HH:mm:ss');
         const lastReportedTime = moment(employee['reportedTime'], 'HH:mm:ss');
         const diff = currTime.diff(lastReportedTime, 'seconds');
-        if (detected) {
+        if (detected == 'true') {
             employee['activeTime'] += 10;
             // employee['activeTime'] += diff;
             employee['status'] = true;
