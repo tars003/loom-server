@@ -86,7 +86,7 @@ const reportLiveStatus = async (data) => {
     // IF FOUND UPDATING THE VALUES
     if (employee) {
         const currTime = moment(getTime(), 'HH:mm:ss');
-        const lastReportedTime = moment(employee['reportedTime'], 'HH:mm:ss');
+        const lastReportedTime = moment(employee['reportedTime'], 'DD-MM-YY HH:mm:ss');
         const diff = currTime.diff(lastReportedTime, 'seconds');
         if (detected == 'true') {
             // employee['activeTime'] += 10;
