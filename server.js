@@ -26,15 +26,19 @@ app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
 
-app.post('/report-live-status', (req, res) => {
+app.post('/report-live-status', async(req, res) => {
     try {
         const data  = req.body;
         console.log(data);
         // updateDash(data);
-        const runningShift = reportLiveStatus(data);
+        const runningShift = await reportLiveStatus(data);
+        // console.log();
+        // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+        // console.log(runningShift);
         updateDash(runningShift);
         return res.status(200).json({
-            success: true
+            success: true,
+            // data : runningShift
         });
     } catch(err) {
         console.log(err);
