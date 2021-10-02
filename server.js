@@ -89,8 +89,8 @@ io.on('connection', async (socket) => {
 });
 
 // UPDATES DASH WITH EMPLOYEE DATA INCOMING FROM ESP32
-const updateDash = (data) => {
-    io.emit('dashboard-update', data);
+const updateDash = (runningShift) => {
+    io.emit('dashboard-update', {'runningShift' : runningShift});
 }
 
 server.listen(process.env.PORT || 3000, () => {
