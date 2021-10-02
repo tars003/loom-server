@@ -40,7 +40,7 @@ const findRunningShift = async (time) => {
     let runningShift = await RunningShift.find();
 
 
-    runningShift = runningShift[1];
+    runningShift = runningShift[runningShift.length-1];
 
     console.log('found running shift', runningShift);
     return runningShift;

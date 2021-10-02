@@ -110,7 +110,7 @@ const reportLiveStatus = async (data) => {
         newRunningShift['employees'] = newList;
         await newRunningShift.save();
 
-        return employee;
+        return newRunningShift;
     }
 }
 

@@ -30,9 +30,9 @@ app.post('/report-live-status', (req, res) => {
     try {
         const data  = req.body;
         console.log(data);
-        updateDash(data);
-        const empData = reportLiveStatus(data);
-
+        // updateDash(data);
+        const runningShift = reportLiveStatus(data);
+        updateDash(runningShift);
         return res.status(200).json({
             success: true
         });
