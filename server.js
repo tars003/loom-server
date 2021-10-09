@@ -6,6 +6,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { cors: { origin: '*' }, allowEIO3: true });
 const moment = require('moment');
+var mqtt    = require('mqtt');
+
+// MQTT CLIENT CONFIG
+var client  = mqtt.connect("mqtt://test.mosquitto.org",{clientId:"mqttjs01"});
 
 app.use(cors());
 app.use(express.json());
@@ -48,6 +52,33 @@ app.post('/report-live-status', async(req, res) => {
     }
 });
 
+// MQTT CONFIG
+client.on("connect",function(){	
+    console.log("connected");
+});
+
+client.on("error",function(error){ console.log("Can't connect"+error)});
+
+client.subscribe(topic, [options], [callback]);
+
+client.on('message',function(topic, message, packet){
+	console.log("message is "+ message);
+	console.log("topic is "+ topic);
+    
+    // input data
+    // data = {
+    //     stationId: 'STATION1',
+    //     tagId: 'nfklvks72y394inl',
+    //     dateTime: '12-09-21 21:45:10',
+    //     detected: true,
+    //     rssi: 90,
+    // }
+    const empData = await reportLiveStatus(message);
+    updateDash(empData);
+});
+
+
+// SOCKET CONFIG
 
 io.on('connection', async (socket) => {
     console.log('A station connected');
@@ -59,7 +90,8 @@ io.on('connection', async (socket) => {
     //     stationId: 'STATION1',
     //     tagId: 'nfklvks72y394inl',
     //     dateTime: '12-09-21 21:45:10',
-    //     detected: true
+    //     detected: true,
+    //     rssi: 90,
     // }
     socket.on('report-live-status', (data) => {
         updateDash(data);
@@ -100,5 +132,3 @@ const updateDash = (runningShift) => {
 server.listen(process.env.PORT || 3000, () => {
     console.log('listening on *:3000');
 });
-
-

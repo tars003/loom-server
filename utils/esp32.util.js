@@ -17,12 +17,14 @@ const reportLiveStatus = async (data) => {
         dateTimeString,
         stationId,
         tagId,
-        detected
+        detected,
+        rssi
     } = data;
     console.log(
         dateTimeString,
         stationId,
         tagId,
+        rssi,
         detected
     );
     dateTimeString = moment(dateTimeString).utc().format('DD-MM-YY HH:mm:ss');
@@ -98,6 +100,7 @@ const reportLiveStatus = async (data) => {
             employee['status'] = false;
         }
         employee['reportedTime'] = dateTimeString;
+        employee['lastRSSI'] = rssi;
         const newList =  employeesObj.map(emp => {
             console.log('emp.id', emp.id);
             console.log('employee.id', employee.id);

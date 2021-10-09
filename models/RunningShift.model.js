@@ -12,7 +12,8 @@ const Runningshift = mongoose.Schema({
             awayTime: Number,
             idealTime: Number,
             reportedTime: String,
-            status: Boolean
+            status: Boolean,
+            lastRSSI: Number,
         }
     ]
 });
